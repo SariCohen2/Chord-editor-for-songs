@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עורך אקורדים לשירים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 20px;
+        }
+
+        /* h1 {
+            color: #ff4500;
+            text-align: center;
+        } */
+             /* כותרת ראשית */
+        header {
+            background: linear-gradient(to left, #c7a98d, #a2794e);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 100px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+            /* שמירה על ירידת שורה */
+        }
+
+        #song-preview {
+            margin-top: 20px;
+            line-height: 2em;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .word {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 5px;
+            border: 1px dashed transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .word:hover {
+            border-color: #ff4500;
+        }
+
+        .chords-container {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .chord {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #007bff;
+            white-space: nowrap;
+        }
+
+        .line-break {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        select,
+        button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            /* background-color: #ff4500; */
+            background-color: #c7a98d;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            /* background-color: #e03e00; */
+            background-color: #a2794e;
+        }
+
+        /* Footer */
+        footer {
+            /* background-color: rgb(178, 189, 202); */
+            background: linear-gradient(to left, #c7a98d, #a2794e);
+
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <h1>עורך אקורדים לשירים</h1> -->
+    <header>
+        <img src="https://img.icons8.com/ios/452/guitar.png" width="80px" height="80px" alt="גיטרה">
+        עורך אקורדים לשירים
+    </header>
+    <div class="container">
+        <!-- שדה לקבלת שם השיר -->
+        <!-- שדה לקבלת שם השיר -->
+        <label for="song-title">כותרת השיר:</label>
+        <input type="text" id="song-title" placeholder="הכנס את שם השיר כאן" style="width: 100%; padding: 8px; margin-bottom: 15px;">
+        
+        <textarea id="song-text" placeholder="הכנס כאן את מילות השיר"></textarea>
+        <div class="controls">
+            <button onclick="generatePreview()">צור תצוגה מקדימה</button>
+            <select id="chord-selector">
+                <option value="">בחר אקורד</option>
+                <option value="Am">Am</option>
+                <option value="A">A</option>
+                <option value="A7">A7</option>
+                <option value="B">B</option>
+                <option value="Bm">Bm</option>
+                <option value="B7">B7</option>
+                <option value="Bb">Bb</option>
+                <option value="C">C</option>
+                <option value="C7">C7</option>
+                <option value="D">D</option>
+                <option value="Dm">Dm</option>
+                <option value="D7">D7</option>
+                <option value="E">E</option>
+                <option value="Em">Em</option>
+                <option value="E7">E7</option>
+                <option value="F">F</option>
+                <option value="F7">F7</option>
+                <option value="G">G</option>
+                <option value="Gm">Gm</option>
+                <option value="G7">G7</option>
+            </select>
+            <button id="delete-chords-button" onclick="deleteChords()" style="display: none;">מחק אקורדים</button>
+        </div>
+        <div id="song-preview"></div>
+        <button onclick="printSong()">הדפס שיר</button>
+    </div>
+    <footer>
+        <div class="footer-content">
+            © Sari Cohen  | אימייל: saracohen.cp@gmail.com
+        </div>
+    </footer>
+    <script>
+        let selectedWord = null;
+
+        function generatePreview() {
+            const songText = document.getElementById("song-text").value.trim();
+            const preview = document.getElementById("song-preview");
+            preview.innerHTML = "";
+
+            if (!songText) {
+                alert("אנא הכנס מילים לשיר.");
+                return;
+            }
+
+            const lines = songText.split("\n");
+            lines.forEach(line => {
+                const lineContainer = document.createElement("div");
+                lineContainer.className = "line-break";
+
+                const words = line.split(/(\s+)/); // חלוקה למילים ורווחים
+                words.forEach(word => {
+                    const wordElement = document.createElement("span");
+                    wordElement.className = "word";
+                    wordElement.innerText = word.trim();
+
+                    const chordsContainer = document.createElement("div");
+                    chordsContainer.className = "chords-container";
+                    wordElement.appendChild(chordsContainer);
+
+                    wordElement.onclick = () => {
+                        selectedWord = wordElement;
+                        document.getElementById("delete-chords-button").style.display = "block";
+                        const chord = document.getElementById("chord-selector").value;
+
+                        if (chord) {
+                            const chordElement = document.createElement("span");
+                            chordElement.className = "chord";
+                            chordElement.innerText = chord;
+                            chordsContainer.appendChild(chordElement);
+                        }
+                    };
+
+                    lineContainer.appendChild(wordElement);
+                });
+
+                preview.appendChild(lineContainer);
+            });
+        }
+
+        function deleteChords() {
+            if (selectedWord) {
+                const chordsContainer = selectedWord.querySelector(".chords-container");
+                chordsContainer.innerHTML = ""; // מוחק את כל האקורדים
+                selectedWord = null;
+                document.getElementById("delete-chords-button").style.display = "none";
+            }
+        }
+
+        function printSong() {
+            const songTitle = document.getElementById("song-title").value.trim() || "כותרת שיר";
+            const printContent = document.getElementById("song-preview").outerHTML;
+            const printWindow = window.open("", "_blank");
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>הדפסת שיר</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; direction: rtl; line-height: 2em; white-space: pre-wrap; }
+                            .word { display: inline-block; margin: 0 5px; position: relative; }
+                            .chords-container { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
+                            .chord { font-size: 0.9em; font-weight: bold; color: #007bff; white-space: nowrap; }
+                            .line-break { display: block; margin-bottom: 15px; }
+                             h1 { text-align: center; color: #ff4500; }
+                        </style>
+                    </head>
+                    <h1>${songTitle}</h1>
+                    <body>${printContent}</body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+
+</html>
