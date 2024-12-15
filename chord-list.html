@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רשימת שירים</title>
+    <!-- Include external libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        /* General styling */
+        body {
+            background-image: url(./assets/back.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            filter: brightness(0.1) opacity(0.2);
+            z-index: -1;
+        }
+
+        /* Centralized page title */
+        .page-title {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+        }
+
+        /* Styling for song cards */
+        .document-card {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .document-card h3 {
+            font-size: 24px;
+            margin: 0 0 10px;
+            color: #333;
+            text-align: center;
+        }
+
+        .document-card .date {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .document-card .content {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: #333;
+            max-height: 500px;
+            overflow: auto;
+            padding: 10px 0;
+        }
+
+        /* Search bar styling */
+        #search-bar {
+            background-color: white;
+            margin: 20px auto;
+            max-width: 500px;
+            width: 400px;
+            padding: 10px;
+            border-radius: 25px;
+            border: 1px solid #aaa;
+            display: block;
+            color:#f1c40f ;
+        }
+
+        /* Responsive design for cards */
+        @media (max-width: 768px) {
+            .document-card {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .document-card {
+                width: calc(50% - 20px);
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Title -->
+    <div class="page-title">רשימת שירים</div>
+
+    <!-- Search bar -->
+    <input type="text" id="search-bar" placeholder="חפש שיר על פי כותרת או תוכן..." oninput="filterSongs()" dir="rtl" />
+
+    <!-- Cards container -->
+    <div id="documents-container" class="container d-flex flex-wrap justify-content-start" dir="rtl"></div>
+
+    <!-- JavaScript libraries and custom script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>
