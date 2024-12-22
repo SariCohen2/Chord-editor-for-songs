@@ -1,5 +1,6 @@
 
-window.basicURL= 'http://localhost:3000';
+// window.basicURL= 'http://localhost:3000';
+window.basicURL = 'https://chords-server.onrender.com';
 
 window.applyDarkMode = function () {//Check the current mode
     const isDarkMode = localStorage.getItem('darkMode') === 'true';

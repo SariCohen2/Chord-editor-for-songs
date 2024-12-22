@@ -1,5 +1,5 @@
-// const   basicUrl="https://chords-server.onrender.com";//in cloud environment
-const basicUrl = "http://localhost:3000";//in local environment
+const   basicUrl="https://chords-server.onrender.com";//in cloud environment
+// const basicUrl = "http://localhost:3000";//in local environment
 
 window.onload = function () {
     fetchDocuments();
