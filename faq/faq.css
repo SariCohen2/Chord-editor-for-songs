@@ -1,0 +1,79 @@
+/* הגדרות כלליות */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ecf0f1;
+    margin: 0;
+    padding: 0;
+}
+
+/* קונטיינר של השאלות הנפוצות */
+.faq-container {
+    width: 80%;
+    max-width: 1000px;
+    margin: 50px auto;
+    background-color: #ffffffbc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+/* כותרת */
+.faq-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+/* כל שאלה */
+.faq-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f1c40f;
+    transition: background-color 0.3s;
+}
+
+/* השאלה */
+.question {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    cursor: pointer;
+}
+
+/* תשובה */
+.answer {
+    display: none;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+/* כשהשאלה נלחצת */
+.faq-item.active {
+    background-color: #33d2ca;
+}
+
+/* כשלוחצים על השאלה, התשובה נפתחת */
+.faq-item.active .answer {
+    display: block;
+}
+
+/* אפקט hover */
+.faq-item:hover {
+    background-color: #f39c12;
+}
+
+/* מידע ליצירת קשר */
+.contact-info {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+.contact-info a {
+    color: #33d2ca;
+    text-decoration: none;
+}

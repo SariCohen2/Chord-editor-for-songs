@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עורך אקורדים לשירים</title>
+    <link rel="stylesheet" href="./create.css">
+    <!-- הוספת Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main">
+        <header>
+            <div class="page-title">ערוך אקורדים לשירים בקלות</div>
+        </header>
+        <!-- scroll buttons-->
+        <div id="scroll-toggle-buttons" style="position: fixed; top: 10px; left: 10px; z-index: 1000;">
+            <i id="scroll-up" class="scroll-button fas fa-chevron-up" onclick="scrollToTop()"></i>
+            <i id="scroll-down" class="scroll-button fas fa-chevron-down" onclick="scrollToBottom()"></i>
+        </div>
+
+        <button id="toggle-tips-button" onclick="toggleTips()" style="color: #f1c40f;"><i class="fas fa-lightbulb"></i>
+        </button>
+
+        <div id="tips-container">
+            <button id="tips-close-button" onclick="toggleTips()"><i class="fas fa-times"></i></button>
+            <!-- דוגמא ראשונה -->
+            <h3 style="margin-right: 15px;text-align: center;">
+                איך להשתמש בדף?</h3>
+            <ol>
+                <li>הכנס את שם השיר ואת תוכן השיר בשדות המתאימים.</li>
+                <li>לחץ על "צור תצוגה מקדימה" כדי לראות את השיר.</li>
+                <li>בחר אקורד מתוך רשימת הבחירה או חפש אותו.</li>
+                <li>גרור את רשימת האקורדים למיקום נוח לשימוש.</li>
+                <li>לחץ על מילה או רווח כדי להוסיף מעליהם את האקורד שבחרת.</li>
+                <li>לחיצה על "מצב מחיקה" תכניס את השיר למצב מחיקה, שבו לחיצה על אקורד תגרום למחיקתו. במצב זה לא ניתן להוסיף אקורדים על מילים. לחזרה לעריכה, לחץ שוב על הכפתור "ביטול מצב מחיקה".</li>
+                <li>בסיום, תוכל להדפיס/להוריד או לשמור את הקובץ כך שכל המשתמשים יוכלו לצפות בו.</li>
+            </ol>
+
+        </div>
+
+
+        <div class="container">
+            <!-- כותרת השיר -->
+            <input type="text" id="song-title" placeholder="הכנס את שם השיר כאן">
+
+            <!-- מיכל לתוכן השיר ותצוגה מקדימה -->
+            <div id="song-container">
+                <!-- lyrics-->
+                <textarea id="song-text" placeholder="הכנס כאן את מילות השיר"></textarea>
+
+                <!-- תצוגה מקדימה -->
+                <div id="song-preview">תצוגה מקדימה של השיר</div>
+            </div>
+        </div>
+
+        <button id="delete-mode-button" onclick="toggleDeleteMode()"
+        data-bs-toggle="tooltip" data-bs-placement="top" title="למחיקת אקורד בלחיצה"
+        >
+            <i class="fas fa-eraser"></i><span>מצב מחיקה</span>
+        </button>
+        
+        <!-- Controls for chord selection and actions -->
+        <div class="controls">
+            <button onclick="generatePreview()" id="generatePreview">צור תצוגה מקדימה</button>
+            <div id="chord-selector-container">
+                <!-- <button id="delete-chords-button" onclick="deleteChords()" style="display: none;margin-bottom: 5px;"><i
+                        class="fas fa-trash"></i></button> -->
+                <!-- <button id="delete-chords-button" onclick="deleteChords()" style="display: none; margin-bottom: 2px auto;"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="למחיקת כל האקורדים על המילה שנבחרה">
+                    <i class="fas fa-trash"></i>
+                </button> -->
+                <select id="chord-selector">
+                    <option value="">בחר אקורד</option>
+
+                    <option value="A">A</option>
+                    <option value="Am">Am</option>
+                    <option value="A7">A7</option>
+                    <option value="Am7">Am7</option>
+                    <option value="Amaj7">Amaj7</option>
+                    <option value="Adim">Adim</option>
+                    <option value="Aaug">Aaug</option>
+                    <option value="A#">A#</option>
+                    <option value="A#m">A#m</option>
+                    <option value="A#7">A#7</option>
+                    <option value="A#m7">A#m7</option>
+                    <option value="A#maj7">A#maj7</option>
+                    <option value="A#dim">A#dim</option>
+                    <option value="A#aug">A#aug</option>
+                    <option value="B">B</option>
+                    <option value="Bm">Bm</option>
+                    <option value="B7">B7</option>
+                    <option value="Bm7">Bm7</option>
+                    <option value="Bmaj7">Bmaj7</option>
+                    <option value="Bdim">Bdim</option>
+                    <option value="Baug">Baug</option>
+                    <option value="C">C</option>
+                    <option value="Cm">Cm</option>
+                    <option value="C7">C7</option>
+                    <option value="Cm7">Cm7</option>
+                    <option value="Cmaj7">Cmaj7</option>
+                    <option value="Cdim">Cdim</option>
+                    <option value="Caug">Caug</option>
+                    <option value="C#">C#</option>
+                    <option value="C#m">C#m</option>
+                    <option value="C#7">C#7</option>
+                    <option value="C#m7">C#m7</option>
+                    <option value="C#maj7">C#maj7</option>
+                    <option value="C#dim">C#dim</option>
+                    <option value="C#aug">C#aug</option>
+                    <option value="D">D</option>
+                    <option value="Dm">Dm</option>
+                    <option value="D7">D7</option>
+                    <option value="Dm7">Dm7</option>
+                    <option value="Dmaj7">Dmaj7</option>
+                    <option value="Ddim">Ddim</option>
+                    <option value="Daug">Daug</option>
+                    <option value="D#">D#</option>
+                    <option value="D#m">D#m</option>
+                    <option value="D#7">D#7</option>
+                    <option value="D#m7">D#m7</option>
+                    <option value="D#maj7">D#maj7</option>
+                    <option value="D#dim">D#dim</option>
+                    <option value="D#aug">D#aug</option>
+                    <option value="E">E</option>
+                    <option value="Em">Em</option>
+                    <option value="E7">E7</option>
+                    <option value="Em7">Em7</option>
+                    <option value="Emaj7">Emaj7</option>
+                    <option value="Edim">Edim</option>
+                    <option value="Eaug">Eaug</option>
+                    <option value="F">F</option>
+                    <option value="Fm">Fm</option>
+                    <option value="F7">F7</option>
+                    <option value="Fm7">Fm7</option>
+                    <option value="Fmaj7">Fmaj7</option>
+                    <option value="Fdim">Fdim</option>
+                    <option value="Faug">Faug</option>
+                    <option value="F#">F#</option>
+                    <option value="F#m">F#m</option>
+                    <option value="F#7">F#7</option>
+                    <option value="F#m7">F#m7</option>
+                    <option value="F#maj7">F#maj7</option>
+                    <option value="F#dim">F#dim</option>
+                    <option value="F#aug">F#aug</option>
+                    <option value="G">G</option>
+                    <option value="Gm">Gm</option>
+                    <option value="G7">G7</option>
+                    <option value="Gm7">Gm7</option>
+                    <option value="Gmaj7">Gmaj7</option>
+                    <option value="Gdim">Gdim</option>
+                    <option value="Gaug">Gaug</option>
+                    <option value="G#">G#</option>
+                    <option value="G#m">G#m</option>
+                    <option value="G#7">G#7</option>
+                    <option value="G#m7">G#m7</option>
+                    <option value="G#maj7">G#maj7</option>
+                    <option value="G#dim">G#dim</option>
+                    <option value="G#aug">G#aug</option>
+                </select>
+            </div>
+        </div>
+
+
+
+
+
+        <button onclick="printSong()" id="print-button" disabled class="disable">הדפס/הורד שיר</button>
+        <button onclick="saveToDB()" id="save-button" disabled class="disable">שמור לרשימה</button>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </div>
+</body>
+<script src="../script.js"> </script>
+<script src="./create.js"></script>
+
+</html>

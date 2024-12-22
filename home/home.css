@@ -1,0 +1,182 @@
+/* .hero-section {
+    background: url('../assets/back.jpg') no-repeat center center/cover;
+    height: 100vh;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 44px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+} */
+
+body {
+    background: url('../assets/back.jpg') no-repeat center center/cover;
+
+}
+
+
+
+.hero-section {
+    /* background: url('../assets/back.jpg') no-repeat center center/cover; */
+    height: 100vh;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* border-bottom: 5px dotted  white; */
+
+}
+
+
+
+.content {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+h1 span {
+    color: #f1c40f;
+    margin: 6px;
+}
+
+p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cta-button,
+.secondary-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    color: black;
+}
+
+.cta-button {
+    background-color: #f1c40f;
+    color: black;
+}
+
+.secondary-button {
+    background-color: white;
+    color: black;
+    border: 2px solid #f1c40f;
+}
+
+.cta-button:hover {
+    background-color: #e1b30e;
+}
+
+.secondary-button:hover {
+    background-color: #f1c40f;
+    color: white;
+}
+
+/* אזור תכונות */
+.features-section {
+    /* background: #f9f9f9; */
+    background: rgba(0, 0, 0, 0.5);
+    padding: 50px 20px;
+    text-align: center;
+    color: white;
+
+
+}
+
+.features-section h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    /* color: #333; */
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.feature img {
+    width: 60px;
+    margin-bottom: 20px;
+}
+
+.feature h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.feature p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    .cta-button,
+    .secondary-button {
+        font-size: 16px;
+    }
+
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+}

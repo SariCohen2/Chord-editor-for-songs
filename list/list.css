@@ -1,0 +1,343 @@
+body {
+    background-image: url(../assets/back.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: brightness(0.1) opacity(0.2);
+    z-index: -1;
+}
+
+/* Centralized page title */
+.page-title {
+    margin: 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+
+/* Styling for song cards */
+.document-card {
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.document-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.document-card h3 {
+    font-size: 24px;
+    margin: 0 0 10px;
+    color: #333;
+    text-align: center;
+}
+
+.document-card .date {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.document-card .content {
+    white-space: pre-wrap;
+    line-height: 1.8;
+    color: #333;
+    max-height: 500px;
+    overflow: auto;
+    padding: 10px 0;
+}
+
+/* Search bar styling */
+#search-bar {
+    background-color: white;
+    margin: 20px auto;
+    max-width: 500px;
+    width: 80vw;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #aaa;
+    display: block;
+    color: #f1c40f;
+}
+
+/* Responsive design for cards */
+@media (max-width: 768px) {
+    .document-card {
+        width: 100%;
+    }
+
+}
+
+@media (min-width: 769px) {
+    .document-card {
+        width: calc(50% - 20px);
+        display: inline-block;
+    }
+
+}
+
+.notification {
+    font-size: 20px;
+    position: fixed;
+    right: 35vw;
+    bottom: 0vh;
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    z-index: 5000;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    direction: rtl;
+    animation: slideUp 0.9s ease-out, fadeOut 3s ease-in forwards;
+    opacity: 0.9;
+    transform: scale(0.8);
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.likes-count {
+    font-size: 16px;
+    color: #333;
+    padding: 0 10px;
+    font-weight: bold;
+    margin-right: -10px;
+}
+
+.action-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.print-button {
+    background-color: #f1c40f;
+    color: #fff;
+}
+
+
+
+.edit-button {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.action-button:hover {
+    opacity: 0.9;
+}
+
+
+.word {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px;
+    border: 1px dashed transparent;
+    cursor: pointer;
+    position: relative;
+}
+
+.delete-button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    color: #e74c3c;
+    /* color: gray; */
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+}
+
+.document-card:hover .delete-button {
+    display: block;
+}
+
+.delete-button:hover {
+    color: #c0392b;
+}
+
+.chords-container {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.chord {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #007bff;
+    white-space: nowrap;
+}
+
+.line-break {
+    display: block;
+    margin: 10px 0;
+}
+
+#song-preview {
+    margin-top: 20px;
+    line-height: 2em;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px) scale(0.8);
+        opacity: 0;
+
+    }
+
+    to {
+        transform: translateY(0px) scale(1);
+        opacity: 1;
+        bottom: 15vh;
+
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.rtl-swal {
+    direction: rtl;
+    /* מגדיר את הכיוון מימין לשמאל */
+    text-align: right;
+    /* יישור הטקסט לימין */
+}
+
+
+
+/* סגנון כללי לכפתורי טרנספוזיציה */
+.transpose-button {
+    /* background-color: #f1c40f;  */
+    color:#2c3e50 ;
+    border: none;
+    /* color: white; */
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transpose-button:hover {
+    color: #f39c12; 
+    transform: scale(1.1); 
+}
+.document-card:hover .transpose-button {
+    display: block;
+}
+.transpose-button:focus {
+    outline: none;
+}
+.transpose-button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 10px;
+    left: 10%;
+}
+
+/* .transpose-button.up {
+    background-color: #2ecc71; 
+}
+
+.transpose-button.up:hover {
+    background-color: #27ae60;
+} */
+
+/* .transpose-button.down {
+    background-color: #e74c3c;
+}
+
+.transpose-button.down:hover {
+    background-color: #c0392b; 
+} */
+
+
+
+.scroll-button:hover {
+    background-color: #c6a10e;
+    transform: scale(1.1);
+}
+
+.scroll-button:active {
+    transform: scale(1.3);
+}
+
+
+/* כפתורי גלילה */
+.scroll-button {
+    position: fixed;
+    bottom: 50px;
+    right: 0px;
+
+    background-color: #f1c40f;
+    /* border-radius: 50%; */
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+#scrollUp {
+    right: 80px;
+}
+
+#scrollDown {
+    right: 20px;
+}
+
+#scroll-toggle-buttons i {
+    font-size: 20px;
+    color: white;
+}
