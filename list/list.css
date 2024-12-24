@@ -341,3 +341,6 @@ body::before {
     font-size: 20px;
     color: white;
 }
+.word{
+    cursor:pointer !important;
+}
