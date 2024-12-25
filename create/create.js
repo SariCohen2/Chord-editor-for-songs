@@ -90,9 +90,6 @@ async function generatePreview() {
 
 function handleWordClick(wordElement) {
     selectedWord = wordElement;
-    // document.getElementById("delete-chords-button").style.display = "block";
-    // document.getElementById("chord-selector-container").style.paddingBottom = "80px";
-
     const chord = document.getElementById("chord-selector").value;
     if (chord) {
         const chordsContainer = wordElement.querySelector(".chords-container");
@@ -101,8 +98,49 @@ function handleWordClick(wordElement) {
         chordElement.innerText = chord;
         chordsContainer.appendChild(chordElement);
         saveToSessionStorage(); // update the data in sessionStorage
+        const chordSelector=document.getElementById("chord-selector");
+        moveChordToTop(chordSelector, chord);//Push the selected chord to the top
+        saveChordOrderToSession(chordSelector);
+
     }
 }
+function moveChordToTop(chordSelector, chord) {
+    const options = Array.from(chordSelector.options);
+    const existingOption = options.find(option => option.value === chord);
+
+    if (existingOption) {
+        chordSelector.removeChild(existingOption);
+        chordSelector.insertBefore(existingOption, chordSelector.options[1]); // למעלה, אחרי "בחר אקורד"
+    }
+}
+function saveChordOrderToSession(chordSelector) {
+    // שמירת הסדר החדש של האופציות ב-sessionStorage
+    const chordsOrder = Array.from(chordSelector.options).map(option => option.value);
+    sessionStorage.setItem('chordOrder', JSON.stringify(chordsOrder));
+}
+function loadChordOrderFromSession() {
+    // שחזור הסדר מה-sessionStorage
+    const savedOrder = JSON.parse(sessionStorage.getItem('chordOrder'));
+    const chordSelector = document.getElementById("chord-selector");
+
+    if (savedOrder && chordSelector) {
+        // יצירת סדר חדש בהתאם לנתונים מה-sessionStorage
+        const options = Array.from(chordSelector.options);
+        chordSelector.innerHTML = ""; // ניקוי הרשימה הקיימת
+
+        savedOrder.forEach(value => {
+            const option = options.find(opt => opt.value === value);
+            if (option) {
+                chordSelector.appendChild(option);
+            }
+        });
+    }
+}
+document.addEventListener("DOMContentLoaded", loadChordOrderFromSession);
+
+
+
+
 
 function saveToSessionStorage() {
     const previewContent = document.getElementById("song-preview").innerHTML;
