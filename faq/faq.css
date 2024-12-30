@@ -1,79 +1,112 @@
-/* הגדרות כלליות */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #ecf0f1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* background: linear-gradient(135deg, #f1c40f, #33d2ca); */
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #2c3e50;
+    flex-direction: column; 
+
+}
+/* all the content with background color */
+#content{
+    background-color: #00000085;
+    width: 96%;
 }
 
-/* קונטיינר של השאלות הנפוצות */
+/* the container of each faq */
 .faq-container {
-    width: 80%;
-    max-width: 1000px;
-    margin: 50px auto;
-    background-color: #ffffffbc;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-}
+    width: 90%;
+    max-width: 800px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 70px;
+    margin:0 auto;
+    /* background-image: url(../assets/faq.png);
+    background-size: contain 50px 50px ;
+    background-position: 5px 5px; */
+    margin-bottom: 15px;
+    margin-top: 15px;
 
-/* כותרת */
+}
+/* the title of each faq */
 .faq-title {
-    text-align: center;
     font-size: 2.5rem;
+    text-align: center;
     color: #2c3e50;
-    margin-bottom: 30px;
-}
-
-/* כל שאלה */
-.faq-item {
     margin-bottom: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f1c40f;
-    transition: background-color 0.3s;
+    border-bottom: 2px solid #f1c40f;
+    padding-bottom: 10px;
 }
 
-/* השאלה */
-.question {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2c3e50;
+.faq-item {
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    border: #2c3e504e 0.5px solid;
+    background: #f1f8ff;
+    transition: transform 0.3s, background 0.3s;
     cursor: pointer;
 }
 
-/* תשובה */
+.faq-item:hover {
+    background: #f0e68c;
+    transform: scale(1.02);
+}
+
+.question {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .answer {
     display: none;
-    margin-top: 10px;
     font-size: 1.2rem;
-    color: #2c3e50;
+    line-height: 1.6;
+    margin-top: 10px;
+    color: #34495e;
 }
 
-/* כשהשאלה נלחצת */
-.faq-item.active {
-    background-color: #33d2ca;
-}
-
-/* כשלוחצים על השאלה, התשובה נפתחת */
 .faq-item.active .answer {
     display: block;
 }
 
-/* אפקט hover */
-.faq-item:hover {
-    background-color: #f39c12;
+.faq-item.active {
+    background: #33d2ca;
+    color: #fff;
 }
 
-/* מידע ליצירת קשר */
-.contact-info {
+.faq-footer {
     text-align: center;
-    margin-top: 30px;
-    font-size: 1.2rem;
+    margin-top: 40px;
+    padding: 20px;
+    /* background-color: #f0f9f6; */
+    /* color: #00796b; */
+    background-color: #f1f8ff;
     color: #2c3e50;
+
+    font-size: 1.2rem;
+    border-top: 3px dashed #00796b;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 15px;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.contact-info a {
-    color: #33d2ca;
-    text-decoration: none;
+
+.faq-footer p {
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.faq-footer strong {
+    color: #004d40;
+    font-weight: bold;
 }

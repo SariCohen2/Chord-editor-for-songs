@@ -28,7 +28,9 @@
             <i id="scroll-down" class="scroll-button fas fa-chevron-down" onclick="scrollToBottom()"></i>
         </div>
 
-        <button id="toggle-tips-button" onclick="toggleTips()" style="color: #f1c40f;"><i class="fas fa-lightbulb"></i>
+        <button id="toggle-tips-button" class="button" onclick="toggleTips()"  style="background-color: transparent;border: none;color: #f1c40f;" width="50px" >
+            <!-- <i class="fas fa-lightbulb"></i> -->
+             <img src="../assets/idea.png" alt="" height="30px">
         </button>
 
         <div id="tips-container">
@@ -59,7 +61,7 @@
                 <textarea id="song-text" placeholder="הכנס כאן את מילות השיר"></textarea>
 
                 <!-- תצוגה מקדימה -->
-                <div id="song-preview">תצוגה מקדימה של השיר</div>
+                <div id="song-preview" >תצוגה מקדימה של השיר</div>
             </div>
         </div>
 
@@ -71,7 +73,7 @@
         
         <!-- Controls for chord selection and actions -->
         <div class="controls">
-            <button onclick="generatePreview()" id="generatePreview">צור תצוגה מקדימה</button>
+            <button onclick="generatePreview()" id="generatePreview" class="button">צור תצוגה מקדימה</button>
             <div id="chord-selector-container">
                 <select id="chord-selector">
                     <option value="">בחר אקורד</option>
@@ -172,8 +174,8 @@
 
 
 
-        <button onclick="printSong()" id="print-button" disabled class="disable">הדפס/הורד שיר</button>
-        <button onclick="saveToDB()" id="save-button" disabled class="disable">שמור לרשימה</button>
+        <button onclick="printSong()" class="button" id="print-button" disabled class="disable">הדפס/הורד שיר</button>
+        <button onclick="saveToDB()" class="button" id="save-button" disabled class="disable">שמור לרשימה</button>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     </div>
