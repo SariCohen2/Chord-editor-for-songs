@@ -236,6 +236,8 @@ nav {
 
 .nav-link:hover {
     border-bottom: 3px navy solid;
+    background-color: #2c3e500e;
+    /* color:#fff; */
 }
 /* Footer */
 footer {
