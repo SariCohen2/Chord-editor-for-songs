@@ -1,5 +1,5 @@
-const   basicUrl="https://chords-server.onrender.com";
-// const basicUrl = "http://localhost:3000";
+// const   basicUrl="https://chords-server.onrender.com";
+const basicUrl = "http://localhost:3000";
 
 window.onload = function () {
     const printBtn = document.getElementById("print-button");
@@ -22,11 +22,21 @@ function loadFromSessionStorage() {
     const storedContent = sessionStorage.getItem("songContent");
     const title = sessionStorage.getItem("title");
     const st = sessionStorage.getItem("songText");
-    if (title && st) {
+    if (sessionStorage.getItem("edit") && title) {
+        const input = document.getElementById("song-title");
+        input.value = title;
+        document.getElementById("song-text").innerHTML=`
+        
+        לא ניתן לערוך את מילות השיר. 
+         ניתן לערוך רק את האקורדים :) 
+        ` 
+    }
+    else if (title && st) {
         const input = document.getElementById("song-title");
         input.value = title;
         document.getElementById("song-text").innerHTML = st;
     }
+
     if (storedContent) {
         const preview = document.getElementById("song-preview");
         preview.innerHTML = storedContent;
@@ -98,7 +108,7 @@ function handleWordClick(wordElement) {
         chordElement.innerText = chord;
         chordsContainer.appendChild(chordElement);
         saveToSessionStorage(); // update the data in sessionStorage
-        const chordSelector=document.getElementById("chord-selector");
+        const chordSelector = document.getElementById("chord-selector");
         moveChordToTop(chordSelector, chord);//Push the selected chord to the top
         saveChordOrderToSession(chordSelector);
 
@@ -169,11 +179,11 @@ function toggleDeleteMode() {
         deleteButton.classList.add("active");
         Array.from(document.getElementsByClassName('chords-container')).forEach(element => {
             element.classList.add('delete-cursor');
-          });
-          Array.from(document.getElementsByClassName('word')).forEach(element => {
-            element.style.cursor='no-drop';
-          });
-          
+        });
+        Array.from(document.getElementsByClassName('word')).forEach(element => {
+            element.style.cursor = 'no-drop';
+        });
+
 
         document.getElementById('delete-mode-button').innerHTML = `<i class="fas fa-pen"></i>
 <span>ביטול מצב מחיקה</span>`;
@@ -183,20 +193,20 @@ function toggleDeleteMode() {
         //remove delete-cursor from chords
         Array.from(document.getElementsByClassName('chords-container')).forEach(element => {
             element.classList.remove('delete-cursor');
-          });
-          Array.from(document.getElementsByClassName('word')).forEach(element => {
-            element.style.cursor='pointer';
-          });
-        document.getElementById('delete-mode-button').innerHTML=`<i class="fas fa-eraser"></i>
+        });
+        Array.from(document.getElementsByClassName('word')).forEach(element => {
+            element.style.cursor = 'pointer';
+        });
+        document.getElementById('delete-mode-button').innerHTML = `<i class="fas fa-eraser"></i>
         <span>מצב מחיקה</span>`;
         document.removeEventListener("click", deleteChordsOnWord);
     }
-      const selectElement = document.getElementById('chord-selector');
-      if (selectElement) {
-          selectElement.blur();
-          selectElement.value = "";  
+    const selectElement = document.getElementById('chord-selector');
+    if (selectElement) {
+        selectElement.blur();
+        selectElement.value = "";
 
-      }
+    }
 }
 
 function deleteChordsOnWord(event) {
@@ -262,24 +272,31 @@ function printSong() {
 }
 async function saveToDB() {
     //כדי שלא ישמר עם כל הסטייל של מצב מחיקה
-    if(isDeleteMode)
+    if (isDeleteMode)
         toggleDeleteMode();
     const title = document.getElementById("song-title").value.trim();
     const previewContent = document.getElementById("song-preview").innerHTML;
     const date = new Date().toISOString(); // current date in ISO format
-    const { value: password } = await Swal.fire({
-        title: 'בוא נעבור לשמירה!',
-        input: 'password',
-        inputPlaceholder: 'הכנס את הסיסמה - היא תהיה הכלי שלך אם תרצה להסיר את השיר. 💬',
-        showCancelButton: true,
-        confirmButtonText: 'אישור',
-        cancelButtonText: 'ביטול',
-        background: '#2c3e50',
-        color: '#fff',
-        confirmButtonColor: '#f1c40f',
-        cancelButtonColor: '#33d2ca',
-    });
-    if (!title || !previewContent || !password) {
+
+    const edit = sessionStorage.getItem("edit");
+    const p = sessionStorage.getItem("p");
+    let id = sessionStorage.getItem("id");
+    let res = { value: p };
+    if (edit != "true") {
+        res.value = await Swal.fire({
+            title: 'בוא נעבור לשמירה!',
+            input: 'password',
+            inputPlaceholder: 'הכנס את הסיסמה - היא תהיה הכלי שלך אם תרצה להסיר את השיר. 💬',
+            showCancelButton: true,
+            confirmButtonText: 'אישור',
+            cancelButtonText: 'ביטול',
+            background: '#2c3e50',
+            color: '#fff',
+            confirmButtonColor: '#f1c40f',
+            cancelButtonColor: '#33d2ca',
+        });
+    }
+    if (!title || !previewContent || !res.value && !edit) {
         await Swal.fire({
             icon: 'warning',
             title: 'משהו חסר...',
@@ -320,18 +337,23 @@ async function saveToDB() {
         return;
     }
 
+    if (p) {
+        res.value.value = p;
+    }
+
     const payload = {
         name: title,
         content: previewContent,
         createdAt: date,
-        password: password
+        password: res.value.value
     };
 
     try {
-        const response = await fetch(`${basicUrl}/api/documents`, {
-            method: "POST",
+        const tempUrl = p ? `${basicUrl}/api/documents/edit/${id}/${p}` : `${basicUrl}/api/documents`;
+        const response = await fetch(tempUrl, {
+            method: p ? "PUT" : "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(payload)
         });
@@ -348,6 +370,9 @@ async function saveToDB() {
                 confirmButtonColor: '#f1c40f',
                 cancelButtonColor: '#33d2ca',
             });
+            sessionStorage.removeItem("p");
+            sessionStorage.removeItem("id");
+            sessionStorage.removeItem("edit");
         } else {
             await Swal.fire({
                 icon: 'error',

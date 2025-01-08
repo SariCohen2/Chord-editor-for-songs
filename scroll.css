@@ -1,0 +1,65 @@
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: #f1f1f1; /* רקע בהיר למעברי הסקרול */
+    border-radius: 10px;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    /* background-color: #33d2ca;  */
+    background-color: #c6c6c6;
+    border-radius: 10px;
+    border: 3px solid #f1f1f1; /* גבול דק בגוון בהיר */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* הצללה רכה להדגשה */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* שינוי צבע הגלילה בזמן ריחוף */
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #f1c40f; /* צבע שני - צהוב */
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3); /* הצללה חזקה יותר */
+  }
+  
+  /* עיצוב הכפתורים בסקרול */
+  *::-webkit-scrollbar-button {
+    background-color: #2c3e50; /* צבע ראשי - כחול כהה */
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+  
+  *::-webkit-scrollbar-button:hover {
+    /* background-color: #33d2ca;  */
+  }
+  
+  /* הסתרת כפתורי הסקרול אם אינם בשימוש */
+  *::-webkit-scrollbar-button:single-button {
+    display: none;
+  }
+  
+  /* עיצוב סקרול בתוך ה-iframe */
+  iframe::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  iframe::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  iframe::-webkit-scrollbar-thumb {
+    /* background-color: #33d2ca; */
+    border-radius: 10px;
+    border: 3px solid #f1f1f1;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  iframe::-webkit-scrollbar-thumb:hover {
+    background-color: #f1c40f;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  }
+  

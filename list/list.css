@@ -85,7 +85,15 @@ body::before {
     .document-card {
         width: 100%;
     }
-
+}
+@media (max-width:350px)
+{
+    .edit-button {
+        left: 8px;
+    }
+    .button-container{
+        height: 70px;
+    }
 }
 
 @media (min-width: 769px) {
@@ -114,46 +122,6 @@ body::before {
     transform: scale(0.8);
 }
 
-.like-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-}
-
-.likes-count {
-    font-size: 16px;
-    color: #333;
-    padding: 0 10px;
-    font-weight: bold;
-    margin-right: -10px;
-}
-
-.action-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.print-button {
-    background-color: #f1c40f;
-    color: #fff;
-}
-
-
-
-.edit-button {
-    background-color: #3498db;
-    color: #fff;
-}
-
-.action-button:hover {
-    opacity: 0.9;
-}
-
-
 .word {
     display: inline-block;
     margin: 0 5px;
@@ -163,26 +131,7 @@ body::before {
     position: relative;
 }
 
-.delete-button {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background: none;
-    border: none;
-    color: #e74c3c;
-    /* color: gray; */
-    font-size: 16px;
-    cursor: pointer;
-    display: none;
-}
 
-.document-card:hover .delete-button {
-    display: block;
-}
-
-.delete-button:hover {
-    color: #c0392b;
-}
 
 .chords-container {
     position: absolute;
@@ -246,11 +195,90 @@ body::before {
 }
 
 
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.likes-count {
+    font-size: 16px;
+    color: #333;
+    padding: 0 10px;
+    font-weight: bold;
+    margin-right: -10px;
+}
+
+.action-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.print-button {
+    background-color: #f1c40f;
+    color: #fff;
+}
+
+
+.edit-button {
+    /* background-color: #3498db; */
+    /* border-radius: 50%; */
+    /* color: #fff; */
+    margin-left: 3px;
+    /* background-color: transparent; */
+    color: #f1c40f;
+    opacity: 0;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    /* left: 135px; */
+    /* bottom: 10px; */
+    /* border: 1px dotted black; */
+
+}
+.edit-button:hover{
+    color: #f39c12;
+}
+.document-card:hover .edit-button {
+    opacity: 1;
+}
+
+.action-button:hover {
+    opacity: 0.9;
+}
+
+.delete-button {
+    position: absolute;
+    /* bottom: 10px; */
+    /* left: 17%; */
+    top: 5px;
+    left: 3px;
+    /* background: none; */
+    border: none;
+    color: #e74c3c;
+    /* color: gray; */
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+}
+
+.document-card:hover .delete-button {
+    display: block;
+}
+
+.delete-button:hover {
+    color: #c0392b;
+}
+
 
 /* סגנון כללי לכפתורי טרנספוזיציה */
 .transpose-button {
     /* background-color: #f1c40f;  */
-    color:#2c3e50 ;
+    color: #2c3e50;
     border: none;
     /* color: white; */
     padding: 5px 10px;
@@ -263,15 +291,18 @@ body::before {
 }
 
 .transpose-button:hover {
-    color: #f39c12; 
-    transform: scale(1.1); 
+    color: #f39c12;
+    transform: scale(1.1);
 }
+
 .document-card:hover .transpose-button {
     display: block;
 }
+
 .transpose-button:focus {
     outline: none;
 }
+
 .transpose-button-container {
     display: flex;
     justify-content: center;
@@ -279,7 +310,7 @@ body::before {
     margin-top: 10px;
     position: absolute;
     bottom: 10px;
-    left: 10%;
+    left: 2%;
 }
 
 /* .transpose-button.up {
@@ -341,6 +372,7 @@ body::before {
     font-size: 20px;
     color: white;
 }
-.word{
-    cursor:pointer !important;
+
+.word {
+    cursor: pointer !important;
 }

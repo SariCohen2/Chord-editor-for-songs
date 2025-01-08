@@ -1,5 +1,5 @@
-const   basicUrl="https://chords-server.onrender.com";//in cloud environment
-// const basicUrl = "http://localhost:3000";//in local environment
+// const basicUrl = "https://chords-server.onrender.com";//in cloud environment
+const basicUrl = "http://localhost:3000";//in local environment
 
 window.onload = function () {
     fetchDocuments();
@@ -14,6 +14,8 @@ function displayDocuments(documents) {
         card.className = "document-card";
         const title = document.createElement("h3");
         title.textContent = doc.name;
+
+        
         const date = document.createElement("div");
         date.className = "date";
         const formattedDate = new Date(doc.createdAt).toLocaleDateString("he-IL", {
@@ -33,10 +35,10 @@ function displayDocuments(documents) {
         transposeUpButton.className = "transpose-button";
         transposeUpButton.innerHTML = "<i class='fas fa-plus'></i>"; // אייקון של הוספה (פלוס)
         // transposeUpButton.innerHTML = "&#x2191;"; // חץ למעלה
-        
+
         transposeUpButton.className = "transpose-button up";
 
-        transposeUpButton.onclick = () => transposeSongContent(doc.content, 1, id,doc); // טרנספוזיציה למעלה
+        transposeUpButton.onclick = () => transposeSongContent(doc.content, 1, id, doc); // טרנספוזיציה למעלה
 
         // כפתור טרנספוזיציה כלפי למטה
         const transposeDownButton = document.createElement("button");
@@ -44,7 +46,7 @@ function displayDocuments(documents) {
         // transposeDownButton.innerHTML = "&#x2193;"; // חץ למטה
         transposeDownButton.innerHTML = "<i class='fas fa-minus'></i>"; // אייקון של הורדה (מינוס)
 
-        transposeDownButton.onclick = () => transposeSongContent(doc.content, -1, id,doc); // טרנספוזיציה למטה
+        transposeDownButton.onclick = () => transposeSongContent(doc.content, -1, id, doc); // טרנספוזיציה למטה
         transposeDownButton.className = "transpose-button down";
 
         // הוספת כפתורי הטרנספוזיציה
@@ -70,6 +72,13 @@ function displayDocuments(documents) {
         if (likedSongs.includes(doc.id)) {
             likeButton.innerHTML = `<i class="fas fa-heart" style="color: red;"></i>`
         }
+
+
+        const editButton = document.createElement("button");
+        editButton.className = "action-button edit-button";
+        editButton.innerHTML = '<i class="fas fa-edit"></i>'; // אייקון עריכה
+        editButton.onclick = () => editDocument(doc); // קריאה לפונקציה לעריכת המסמך
+
 
         // כפתור הדפסה
         const printButton = document.createElement("button");
@@ -107,10 +116,14 @@ function displayDocuments(documents) {
         // ריכוז כפתורים
         const buttonContainer = document.createElement("div");
         buttonContainer.className = "button-container";
+
         buttonContainer.appendChild(printButton);
-        buttonContainer.appendChild(deleteButton);
+        // buttonContainer.appendChild(deleteButton);
+        title.appendChild(deleteButton);
         buttonContainer.appendChild(likeButton);
         buttonContainer.appendChild(likesCount);
+        // buttonContainer.appendChild(editButton); // הוספת כפתור עריכה
+        title.appendChild(editButton);
 
         // הוספת כפתורי טרנספוזיציה לכרטיס
         card.appendChild(title);
@@ -121,6 +134,103 @@ function displayDocuments(documents) {
         container.appendChild(card);
     });
 }
+function editDocument(doc) {
+    let password;
+    // alert(`עריכת מסמך: ${doc.name}`);
+    Swal.fire({
+        title: 'מוכנים לערוך? הזן את הסיסמה שלך 👇',
+        input: 'password',
+        inputPlaceholder: 'הכנס את הסיסמה שהזנת בעת שמירת השיר',
+        showCancelButton: true,
+        confirmButtonText: 'בטוח רוצה לערוך!',
+        cancelButtonText: 'התחרטתי',
+        background: '#2c3e50',
+        color: '#fff',
+        confirmButtonColor: '#f1c40f',
+        cancelButtonColor: '#33d2ca',
+        customClass: {
+            popup: 'rtl-swal', // specific CSS 
+        },
+    }).then(async (result) => {//If we click OK - the password is checked and the document is deleted.
+        if (result.isConfirmed) {
+            password = result.value;
+            const isCorrect = await checkUser(doc, password);
+
+            if (isCorrect) {
+                // alert('correct');
+                sessionStorage.setItem("songContent", doc.content);
+                sessionStorage.setItem("title", doc.name);
+                sessionStorage.setItem("edit", "true");
+                sessionStorage.setItem("p", password);
+                sessionStorage.setItem("id", doc.id);
+
+                window.saveUrl('./create/create.html');
+
+                let url = window.location.href;
+                url = url.replace("list/list.html", "create/create.html");
+                location.replace(url);
+
+            } else {//If occured any error in the deleting
+                Swal.fire({
+                    icon: 'error',
+                    title: 'איזה יוזמה, הא?',
+                    text: 'נחמד שניסית לערוך, אבל זה לא המסמך שלך, אז... ביי!',
+                    // title: 'באמת חשבת שזה יעבוד?',
+                    // text: 'מה לעשות... אין לך הרשאות פה. תתקדם הלאה.',
+                    background: '#2c3e50',
+                    color: '#fff',
+                    confirmButtonColor: '#f1c40f',
+                    cancelButtonColor: '#33d2ca',
+                    customClass: {
+                        popup: 'rtl-swal', // specific CSS 
+                    },
+                });
+            }
+        } else {//If Cancel is clicked - a message about canceling the edition
+            Swal.fire({
+                icon: 'info',
+                title: 'התחרטת על העריכה',
+                confirmButtonText: 'השיר נשאר כמו שהוא!',
+                background: '#2c3e50',
+                color: '#fff',
+                confirmButtonColor: '#f1c40f',
+                cancelButtonColor: '#33d2ca',
+                customClass: {
+                    popup: 'rtl-swal', // specific CSS 
+                },
+            });
+        }
+    });
+}
+
+
+//Check user password
+async function checkUser(doc, password) {
+    const url = `${basicUrl}/api/documents/checkUser/${doc.id}`; // URL עם פרמטר ה-ID
+    try {
+        const response = await fetch(url, {
+            method: 'POST', // שיטת הבקשה POST
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return true;
+        } else if (response.status === 401) {
+            return false;
+        } else if (response.status === 404) {
+            return false;
+        } else {
+            return false;
+        }
+    } catch (error) {
+
+    }
+}
+
 
 //delete document from list after password enering
 function DeleteDocument(doc) {
@@ -262,13 +372,12 @@ async function handleLike(docId, button, likesCount) {
             localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
         } else {
             showNotification("אירעה שגיאה, נסה שוב.");
-            console.error("Failed response from server.");
         }
     } catch (error) {
-        console.error("Error in like handling", error);
         showNotification("אירעה שגיאה, נסה שוב.");
     }
 }
+
 
 //Filter songs by search input
 function filterSongs() {
@@ -285,23 +394,31 @@ let allDocuments = []; // Global variable to keep the documents
 async function fetchDocuments() {
     try {
         const response = await fetch(`${basicUrl}/api/documents`);
+        if(!response.ok)
+            window.location.reload();
         allDocuments = await response.json();
-        
+        if (!allDocuments)
+            window.location.reload();
         displayDocuments(allDocuments);
     } catch (error) {
-        console.error("שגיאה בטעינת המסמכים:", error);
+        if (!allDocuments) {
+            window.location.reload();
+            console.log('error on get documents');
+            
+        }
+
     }
 }
 
 
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateScrollButtons(); 
+    updateScrollButtons();
 }
 
 function scrollToBottom() {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    updateScrollButtons(); 
+    updateScrollButtons();
 }
 
 function updateScrollButtons() {
@@ -330,16 +447,16 @@ updateScrollButtons();
 
 
 
-function transposeSongContent(content, steps, id,doc) {
+function transposeSongContent(content, steps, id, doc) {
     // הפונקציה משנה את האקורדים בתוכן המסמך
-    const regex = /([A-G]#?m?7?)([^A-G#]+)/g; 
+    const regex = /([A-G]#?m?7?)([^A-G#]+)/g;
     content = content.replace(regex, (match, chord, rest) => {
-        return transposeChord(chord, steps) + rest; 
+        return transposeChord(chord, steps) + rest;
     });
 
     const idContent = document.getElementById(id);
     idContent.innerHTML = content
-    doc.content=content
+    doc.content = content
 
 
     return content;
@@ -349,21 +466,21 @@ function transposeSongContent(content, steps, id,doc) {
 
 // פונקציה שמבצעת טרנספוזיציה
 function transposeChord(chord, steps) {
-    const regex = /^([A-G]#?)(.*)$/; 
+    const regex = /^([A-G]#?)(.*)$/;
     const match = chord.match(regex);
 
-    if (!match) return chord; 
-    const base = match[1]; 
-    const modifier = match[2]; 
+    if (!match) return chord;
+    const base = match[1];
+    const modifier = match[2];
     const baseChords = [
         "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"
-    ]; 
+    ];
 
     const index = baseChords.findIndex(ch => ch === base);
-    if (index === -1) return chord; 
+    if (index === -1) return chord;
 
-    const newIndex = (index + steps + baseChords.length) % baseChords.length; 
-    const newBase = baseChords[newIndex]; 
-    return newBase + modifier; 
+    const newIndex = (index + steps + baseChords.length) % baseChords.length;
+    const newBase = baseChords[newIndex];
+    return newBase + modifier;
 }
 
