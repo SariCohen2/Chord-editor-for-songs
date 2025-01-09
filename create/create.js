@@ -1,5 +1,5 @@
-// const   basicUrl="https://chords-server.onrender.com";
-const basicUrl = "http://localhost:3000";
+const   basicUrl="https://chords-server.onrender.com";
+// const basicUrl = "http://localhost:3000";
 
 window.onload = function () {
     const printBtn = document.getElementById("print-button");
