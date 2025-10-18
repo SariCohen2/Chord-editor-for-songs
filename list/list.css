@@ -18,7 +18,11 @@ body::before {
     filter: brightness(0.1) opacity(0.2);
     z-index: -1;
 }
-
+#loading{
+    font-size: 25px;
+    text-align: center;
+    color: white;
+}
 /* Centralized page title */
 .page-title {
     margin: 20px 0;
